@@ -31,7 +31,7 @@ connection.on("error", (err) => {
   console.log("MongoDB connection error:", err);
 });
 
-app.get("/test", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
