@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Box,
+  Flex,
   Table,
   Thead,
   Tbody,
@@ -36,7 +38,7 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('userToken');
-      const response = await axios.get('http://localhost:8080/user/users', {
+      const response = await axios.get('https://userbackend-0yhs.onrender.com/user/users', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(response.data);
@@ -53,7 +55,7 @@ const UserManagement = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('userToken');
-      await axios.delete(`http://localhost:8080/user/users/${id}`, {
+      await axios.delete(`https://userbackend-0yhs.onrender.com/user/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user._id !== id));
@@ -77,7 +79,7 @@ const UserManagement = () => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('userToken');
-      const response = await axios.put(`http://localhost:8080/user/users/${selectedUser._id}`, selectedUser, {
+      const response = await axios.put(`https://userbackend-0yhs.onrender.com/user/users/${selectedUser._id}`, selectedUser, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.map((user) => (user._id === selectedUser._id ? response.data : user)));
@@ -100,37 +102,43 @@ const UserManagement = () => {
   };
 
   return (
-    <div>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Email</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {users.map((user) => (
-              <Tr key={user._id}>
-                <Td>{user.name}</Td>
-                <Td>{user.email}</Td>
-                <Td>
-                  <IconButton
-                    icon={<EditIcon />}
-                    onClick={() => handleEdit(user)}
-                    mr={2}
-                  />
-                  <IconButton
-                    icon={<DeleteIcon />}
-                    onClick={() => handleDelete(user._id)}
-                  />
-                </Td>
+    <Flex justify="center"  minHeight="100vh" bg="gray.100" p={4}>
+      <Box w="full" maxW="1200px" bg="white" boxShadow="lg" borderRadius="md" p={6}>
+        <TableContainer>
+          <Table variant="simple">
+            <Thead bg="blue.500">
+              <Tr>
+                <Th color="white" border="none">Name</Th>
+                <Th color="white" border="none">Email</Th>
+                <Th color="white" border="none">Actions</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+            </Thead>
+            <Tbody>
+              {users.map((user) => (
+                <Tr key={user._id} _hover={{ bg: "gray.50" }}>
+                  <Td>{user.name}</Td>
+                  <Td>{user.email}</Td>
+                  <Td>
+                    <IconButton
+                      icon={<EditIcon />}
+                      onClick={() => handleEdit(user)}
+                      mr={2}
+                      colorScheme="blue"
+                      aria-label="Edit"
+                    />
+                    <IconButton
+                      icon={<DeleteIcon />}
+                      onClick={() => handleDelete(user._id)}
+                      colorScheme="red"
+                      aria-label="Delete"
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -161,7 +169,7 @@ const UserManagement = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </div>
+    </Flex>
   );
 };
 

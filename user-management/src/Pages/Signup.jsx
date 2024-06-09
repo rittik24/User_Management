@@ -25,7 +25,7 @@ export default function Signup() {
 
   const Register = async () => {
     try {
-      let r = await fetch(`http://localhost:8080/user/register`, {
+      let r = await fetch(`https://userbackend-0yhs.onrender.com/user/register`, {
         method: "POST",
         body: JSON.stringify(cred),
         headers: {
